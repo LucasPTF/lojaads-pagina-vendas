@@ -145,7 +145,7 @@ function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <a href="#inicio" className="brand" aria-label="LojaADS, voltar ao início">
-          <img src="/assets/logo-lojaads.png" alt="LojaADS" width="405" height="102" />
+          <img src="/assets/logo-lojaads.png" alt="LojaADS" width="2172" height="724" />
         </a>
         <nav aria-label="Navegação principal">
           <a href="#diagnostico">Diagnóstico</a>
@@ -503,7 +503,7 @@ function Footer() {
   return (
     <footer>
       <div className="container footer-inner">
-        <img src="/assets/logo-lojaads.png" alt="LojaADS" width="405" height="102" />
+        <img src="/assets/logo-lojaads.png" alt="LojaADS" width="2172" height="724" />
         <p>Método L³. Crescimento com lucro para lojas.</p>
       </div>
     </footer>
@@ -518,7 +518,7 @@ function ThankYouPage() {
       <header className="site-header thank-header">
         <div className="container header-inner">
           <a href="/a1" className="brand" aria-label="LojaADS, ir para a página principal">
-            <img src="/assets/logo-lojaads.png" alt="LojaADS" width="405" height="102" />
+            <img src="/assets/logo-lojaads.png" alt="LojaADS" width="2172" height="724" />
           </a>
         </div>
       </header>
