@@ -223,6 +223,33 @@ nav .nav-cta {
   will-change: transform;
 }
 
+.hero-grid::before,
+.hero-grid::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.hero-grid::before {
+  top: 6%;
+  right: 4%;
+  width: clamp(280px, 34vw, 520px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(17, 134, 220, 0.2), transparent 68%);
+  border-radius: 50%;
+  animation: heroGlowTravel 10s var(--ease-in-out) infinite alternate;
+}
+
+.hero-grid::after {
+  top: -12%;
+  right: 23%;
+  width: 2px;
+  height: 124%;
+  background: linear-gradient(to bottom, transparent, rgba(17, 134, 220, 0.28), transparent);
+  animation: heroLightTrace 8s var(--ease-in-out) infinite;
+}
+
 .hero-layout {
   display: grid;
   min-height: min(820px, calc(100vh - 78px));
@@ -243,6 +270,27 @@ nav .nav-cta {
   color: var(--navy);
   font-size: clamp(2.9rem, 5.4vw, 4.7rem);
   line-height: 0.99;
+}
+
+.hero-copy h1.hero-stagger {
+  animation-name: heroTitleEnter;
+}
+
+.hero-copy .eyebrow {
+  position: relative;
+  width: fit-content;
+}
+
+.hero-copy .eyebrow::after {
+  display: block;
+  width: 74px;
+  height: 2px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, var(--blue), #58baf7);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: heroRuleEnter 680ms var(--ease-out) 440ms both;
 }
 
 .hero-support {
@@ -339,6 +387,65 @@ nav .nav-cta {
   position: relative;
 }
 
+.hero-signals {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-signal {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px 10px 10px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(7, 94, 168, 0.18);
+  border-radius: 13px;
+  box-shadow: 0 16px 38px rgba(8, 26, 51, 0.13);
+  color: var(--navy);
+  backdrop-filter: blur(10px);
+  animation: heroSignalFloat 5.4s var(--ease-in-out) infinite alternate;
+  will-change: transform;
+}
+
+.hero-signal span {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  background: var(--blue);
+  border-radius: 9px;
+  color: var(--white);
+  font-family: "Lexend", "Segoe UI", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.hero-signal strong {
+  font-family: "Lexend", "Segoe UI", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: -0.01em;
+}
+
+.hero-signal-lucro {
+  top: 18%;
+  left: -8%;
+}
+
+.hero-signal-lead {
+  top: 39%;
+  right: -7%;
+  animation-delay: -1.8s;
+}
+
+.hero-signal-loja {
+  right: 2%;
+  bottom: 21%;
+  animation-delay: -3.6s;
+}
+
 .hero-visual::before,
 .hero-visual::after {
   position: absolute;
@@ -387,6 +494,8 @@ nav .nav-cta {
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  animation: heroPortraitBreath 10s var(--ease-in-out) infinite alternate;
+  will-change: transform;
 }
 
 .portrait-badge {
@@ -405,6 +514,7 @@ nav .nav-cta {
   border-radius: 13px;
   color: var(--white);
   backdrop-filter: blur(12px);
+  animation: heroBadgeFloat 5.8s var(--ease-in-out) -1.2s infinite alternate;
 }
 
 .portrait-badge strong {
@@ -430,6 +540,16 @@ nav .nav-cta {
 @keyframes heroEnter {
   from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroTitleEnter {
+  from { opacity: 0; clip-path: inset(0 0 24% 0); transform: translateY(34px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: translateY(0); }
+}
+
+@keyframes heroRuleEnter {
+  from { opacity: 0; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
 }
 
 .facts {
@@ -1331,9 +1451,7 @@ details[open] > p {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(92px, 12vw, 170px) 0;
-  background:
-    radial-gradient(circle at 50% 120%, rgba(17, 134, 220, 0.3), transparent 46%),
-    var(--navy);
+  background: var(--navy);
   color: var(--white);
   text-align: center;
 }
@@ -1342,25 +1460,34 @@ details[open] > p {
 .closing-section::after {
   position: absolute;
   z-index: -1;
-  width: 340px;
-  height: 340px;
-  background: radial-gradient(circle, rgba(61, 182, 255, 0.2), transparent 68%);
-  border-radius: 50%;
   content: "";
   pointer-events: none;
-  will-change: transform, opacity;
 }
 
 .closing-section::before {
-  top: -180px;
-  left: -80px;
-  animation: closingGlow 10s var(--ease-in-out) infinite alternate;
+  inset: -5%;
+  background-image: url("/assets/renata-autoridade.webp");
+  background-position: center 34%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.34;
+  filter: saturate(0.72) contrast(1.06);
+  animation: closingPhotoDrift 14s var(--ease-in-out) infinite alternate;
+  will-change: transform;
 }
 
 .closing-section::after {
-  right: -90px;
-  bottom: -190px;
-  animation: closingGlow 12s var(--ease-in-out) -3s infinite alternate-reverse;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 118%, rgba(17, 134, 220, 0.32), transparent 48%),
+    linear-gradient(105deg, rgba(8, 26, 51, 0.9), rgba(8, 26, 51, 0.7) 50%, rgba(8, 26, 51, 0.9));
+  content: "";
+  pointer-events: none;
+}
+
+.closing-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .closing-inner > div {
@@ -1479,6 +1606,32 @@ footer {
   to { transform: translate3d(27px, 27px, 0); }
 }
 
+@keyframes heroGlowTravel {
+  from { opacity: 0.52; transform: translate3d(-12px, 10px, 0) scale(0.92); }
+  to { opacity: 1; transform: translate3d(20px, -16px, 0) scale(1.08); }
+}
+
+@keyframes heroLightTrace {
+  0%, 100% { opacity: 0; transform: translate3d(-120px, -6%, 0) rotate(12deg); }
+  22%, 72% { opacity: 0.8; }
+  86% { opacity: 0; transform: translate3d(170px, 6%, 0) rotate(12deg); }
+}
+
+@keyframes heroSignalFloat {
+  from { transform: translate3d(-4px, 5px, 0) rotate(-1deg); }
+  to { transform: translate3d(6px, -7px, 0) rotate(1deg); }
+}
+
+@keyframes heroPortraitBreath {
+  from { transform: scale(1.01); }
+  to { transform: scale(1.055); }
+}
+
+@keyframes heroBadgeFloat {
+  from { transform: translateY(3px); }
+  to { transform: translateY(-4px); }
+}
+
 @keyframes portraitOrbit {
   from { transform: translate3d(-5px, 6px, 0) scale(0.98); opacity: 0.55; }
   to { transform: translate3d(8px, -8px, 0) scale(1.02); opacity: 1; }
@@ -1531,9 +1684,45 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes closingGlow {
-  from { opacity: 0.45; transform: translate3d(-14px, 8px, 0) scale(0.92); }
-  to { opacity: 0.9; transform: translate3d(18px, -12px, 0) scale(1.08); }
+@keyframes closingPhotoDrift {
+  from { transform: scale(1.02) translate3d(-0.6%, 0.5%, 0); }
+  to { transform: scale(1.09) translate3d(0.8%, -0.7%, 0); }
+}
+
+.hero-grid,
+.hero-grid::before,
+.hero-grid::after,
+.hero-visual::before,
+.hero-visual::after,
+.hero-signal,
+.portrait-frame img,
+.portrait-badge,
+.diagnostic-section::before,
+.scanner-status i,
+.scan-beam,
+.l3-scanner.is-visible .scanner-body article::after,
+.offer-card.is-visible::before,
+.closing-section::before,
+.thank-grid {
+  animation-play-state: paused;
+}
+
+.hero.is-motion-active .hero-grid,
+.hero.is-motion-active .hero-grid::before,
+.hero.is-motion-active .hero-grid::after,
+.hero.is-motion-active .hero-visual::before,
+.hero.is-motion-active .hero-visual::after,
+.hero.is-motion-active .hero-signal,
+.hero.is-motion-active .portrait-frame img,
+.hero.is-motion-active .portrait-badge,
+.diagnostic-section.is-motion-active::before,
+.diagnostic-section.is-motion-active .scanner-status i,
+.diagnostic-section.is-motion-active .scan-beam,
+.diagnostic-section.is-motion-active .l3-scanner.is-visible .scanner-body article::after,
+.offer-section.is-motion-active .offer-card.is-visible::before,
+.closing-section.is-motion-active::before,
+.thank-main.is-motion-active .thank-grid {
+  animation-play-state: running;
 }
 
 .thank-page {
@@ -1848,6 +2037,14 @@ footer {
     margin-inline: auto;
   }
 
+  .hero-signal-lucro {
+    left: -3%;
+  }
+
+  .hero-signal-lead {
+    right: -3%;
+  }
+
   .facts-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1972,6 +2169,42 @@ footer {
 
   .portrait-frame {
     border-radius: 132px 132px 22px 22px;
+  }
+
+  .hero-signal {
+    gap: 7px;
+    padding: 7px 9px 7px 7px;
+    border-radius: 11px;
+  }
+
+  .hero-signal span {
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    font-size: 0.59rem;
+  }
+
+  .hero-signal strong {
+    font-size: 0.65rem;
+  }
+
+  .hero-signal-lucro {
+    top: 18%;
+    left: -2%;
+  }
+
+  .hero-signal-lead {
+    top: 41%;
+    right: -2%;
+  }
+
+  .hero-signal-loja {
+    right: 1%;
+    bottom: 22%;
+  }
+
+  .closing-section::before {
+    background-position: center 26%;
   }
 
   .portrait-badge {
@@ -2161,6 +2394,10 @@ footer {
   .hero-stagger {
     opacity: 1;
     transform: none;
+  }
+
+  .hero-copy h1.hero-stagger {
+    clip-path: none;
   }
 
   .scroll-progress {

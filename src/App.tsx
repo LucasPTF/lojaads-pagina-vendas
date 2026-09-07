@@ -118,6 +118,7 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
 function useRevealMotion() {
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const motionRegions = document.querySelectorAll<HTMLElement>("[data-motion-region]");
     const root = document.documentElement;
     let frame = 0;
 
@@ -138,6 +139,7 @@ function useRevealMotion() {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       targets.forEach((target) => target.classList.add("is-visible"));
+      motionRegions.forEach((region) => region.classList.add("is-motion-active"));
       return () => {
         window.removeEventListener("scroll", requestProgressUpdate);
         window.removeEventListener("resize", requestProgressUpdate);
@@ -157,9 +159,18 @@ function useRevealMotion() {
       { threshold: 0.12, rootMargin: "0px 0px -8%" },
     );
 
+    const motionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => entry.target.classList.toggle("is-motion-active", entry.isIntersecting));
+      },
+      { threshold: 0.04 },
+    );
+
     targets.forEach((target) => observer.observe(target));
+    motionRegions.forEach((region) => motionObserver.observe(region));
     return () => {
       observer.disconnect();
+      motionObserver.disconnect();
       window.removeEventListener("scroll", requestProgressUpdate);
       window.removeEventListener("resize", requestProgressUpdate);
       if (frame) window.cancelAnimationFrame(frame);
@@ -232,7 +243,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
       <div className="scroll-progress" aria-hidden="true" />
       <Header />
       <main>
-        <section className="hero" id="inicio">
+        <section className="hero" id="inicio" data-motion-region>
           <div className="hero-grid" aria-hidden="true" />
           <div className="container hero-layout">
             <div className="hero-copy">
@@ -248,6 +259,11 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
             </div>
 
             <div className="hero-visual hero-stagger hero-stagger-3">
+              <div className="hero-signals" aria-hidden="true">
+                <div className="hero-signal hero-signal-lucro"><span>L1</span><strong>Lucro</strong></div>
+                <div className="hero-signal hero-signal-lead"><span>L2</span><strong>Lead</strong></div>
+                <div className="hero-signal hero-signal-loja"><span>L3</span><strong>Loja</strong></div>
+              </div>
               <div className="portrait-frame">
                 <img
                   src="/assets/renata-hero.webp"
@@ -304,7 +320,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
         </section>
 
-        <section className="section diagnostic-section" id="diagnostico">
+        <section className="section diagnostic-section" id="diagnostico" data-motion-region>
           <div className="container diagnostic-layout">
             <Reveal className="diagnostic-copy">
               <p className="eyebrow eyebrow-light">Um mapa para enxergar a operação inteira</p>
@@ -470,7 +486,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
         </section>
 
-        <section className="section offer-section" id="inscricao">
+        <section className="section offer-section" id="inscricao" data-motion-region>
           <div className="container offer-layout">
             <Reveal className="offer-copy">
               <p className="eyebrow">Workshop Raio-X L³</p>
@@ -512,7 +528,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
         </section>
 
-        <section className="closing-section">
+        <section className="closing-section" data-motion-region>
           <div className="container closing-inner">
             <Reveal>
               <p className="eyebrow eyebrow-light">Lucro. Lead. Loja.</p>
@@ -551,7 +567,7 @@ function ThankYouPage() {
           </a>
         </div>
       </header>
-      <main className="thank-main">
+      <main className="thank-main" data-motion-region>
         <div className="thank-grid" aria-hidden="true" />
         <div className="container thank-layout">
           <Reveal className="thank-card">
