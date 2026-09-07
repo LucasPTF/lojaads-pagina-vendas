@@ -118,9 +118,31 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
 function useRevealMotion() {
   useEffect(() => {
     const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const root = document.documentElement;
+    let frame = 0;
+
+    const updateProgress = () => {
+      const scrollable = root.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(Math.max(window.scrollY / scrollable, 0), 1) : 0;
+      root.style.setProperty("--scroll-progress", progress.toString());
+      frame = 0;
+    };
+
+    const requestProgressUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", requestProgressUpdate, { passive: true });
+    window.addEventListener("resize", requestProgressUpdate);
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       targets.forEach((target) => target.classList.add("is-visible"));
-      return;
+      return () => {
+        window.removeEventListener("scroll", requestProgressUpdate);
+        window.removeEventListener("resize", requestProgressUpdate);
+        if (frame) window.cancelAnimationFrame(frame);
+      };
     }
 
     const observer = new IntersectionObserver(
@@ -136,7 +158,12 @@ function useRevealMotion() {
     );
 
     targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", requestProgressUpdate);
+      window.removeEventListener("resize", requestProgressUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 }
 
@@ -202,6 +229,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
 
   return (
     <>
+      <div className="scroll-progress" aria-hidden="true" />
       <Header />
       <main>
         <section className="hero" id="inicio">
@@ -515,6 +543,7 @@ function ThankYouPage() {
 
   return (
     <div className="thank-page">
+      <div className="scroll-progress" aria-hidden="true" />
       <header className="site-header thank-header">
         <div className="container header-inner">
           <a href="/a1" className="brand" aria-label="LojaADS, ir para a página principal">
