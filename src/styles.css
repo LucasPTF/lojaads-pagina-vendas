@@ -1467,9 +1467,9 @@ details[open] > p {
 .closing-section::before {
   inset: -5%;
   background-image: url("/assets/renata-autoridade.webp");
-  background-position: center 34%;
+  background-position: center 18%;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: auto 145%;
   opacity: 0.34;
   filter: saturate(0.72) contrast(1.06);
   animation: closingPhotoDrift 14s var(--ease-in-out) infinite alternate;
@@ -1685,8 +1685,8 @@ footer {
 }
 
 @keyframes closingPhotoDrift {
-  from { transform: scale(1.02) translate3d(-0.6%, 0.5%, 0); }
-  to { transform: scale(1.09) translate3d(0.8%, -0.7%, 0); }
+  from { transform: scale(1.015) translate3d(-0.35%, 0.25%, 0); }
+  to { transform: scale(1.045) translate3d(0.45%, -0.35%, 0); }
 }
 
 .hero-grid,
@@ -2204,7 +2204,8 @@ footer {
   }
 
   .closing-section::before {
-    background-position: center 26%;
+    background-position: center 18%;
+    background-size: auto 138%;
   }
 
   .portrait-badge {
