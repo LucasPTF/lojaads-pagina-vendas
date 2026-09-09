@@ -30,14 +30,30 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 96px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
+  max-width: 100%;
   background: var(--white);
   color: var(--ink);
-  overflow-x: clip;
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
+#root,
+.sales-page,
+main {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.sales-page {
+  padding-bottom: calc(82px + env(safe-area-inset-bottom));
 }
 
 .scroll-progress {
@@ -111,7 +127,17 @@ svg {
 
 .container {
   width: min(1180px, calc(100% - 48px));
+  min-width: 0;
   margin-inline: auto;
+}
+
+.container > *,
+.hero-copy,
+.section-copy,
+.content-heading > *,
+.authority-copy,
+.offer-copy {
+  min-width: 0;
 }
 
 .section {
@@ -1049,13 +1075,13 @@ nav .nav-cta {
 .outcome-list {
   display: grid;
   align-content: center;
-  padding: clamp(32px, 5vw, 58px);
+  padding: clamp(24px, 4vw, 42px);
   background: var(--white);
   border: 1px solid var(--line);
   gap: 0;
 }
 
-.outcome-list > div {
+.outcome-point {
   display: flex;
   align-items: flex-start;
   gap: 13px;
@@ -1071,17 +1097,143 @@ nav .nav-cta {
     transform 480ms var(--ease-out);
 }
 
-.outcome-list.is-visible > div {
+.outcome-list.is-visible > .outcome-point {
   opacity: 1;
   transform: translateX(0);
 }
 
-.outcome-list.is-visible > div:nth-child(2) { transition-delay: 70ms; }
-.outcome-list.is-visible > div:nth-child(3) { transition-delay: 140ms; }
-.outcome-list.is-visible > div:nth-child(4) { transition-delay: 210ms; }
+.outcome-list.is-visible > .outcome-point:nth-of-type(2) { transition-delay: 70ms; }
+.outcome-list.is-visible > .outcome-point:nth-of-type(3) { transition-delay: 140ms; }
+.outcome-list.is-visible > .outcome-point:nth-of-type(4) { transition-delay: 210ms; }
+.outcome-list.is-visible > .outcome-point:nth-of-type(5) { transition-delay: 280ms; }
 
-.outcome-list > div:last-child {
+.outcome-point:last-child {
   border-bottom: 0;
+}
+
+.outcome-diagnostic {
+  position: relative;
+  isolation: isolate;
+  min-height: 230px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(17, 134, 220, 0.2), transparent 35%),
+    linear-gradient(145deg, #081a33, #0d3157);
+  border: 1px solid rgba(7, 94, 168, 0.18);
+  border-radius: 16px;
+}
+
+.outcome-orbit {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  border: 1px dashed rgba(130, 207, 252, 0.38);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: outcomeOrbit 12s linear infinite;
+}
+
+.outcome-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 98px;
+  height: 98px;
+  place-content: center;
+  background: rgba(7, 94, 168, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 12px rgba(17, 134, 220, 0.08);
+  color: var(--white);
+  text-align: center;
+  transform: translate(-50%, -50%);
+  animation: outcomeCorePulse 3.2s var(--ease-in-out) infinite alternate;
+}
+
+.outcome-core span,
+.outcome-core small {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.outcome-core strong {
+  font-family: "Lexend", "Segoe UI", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.outcome-pillar {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 88px;
+  padding: 7px 9px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(130, 207, 252, 0.42);
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  color: var(--navy);
+  opacity: 0;
+  transition: opacity 520ms var(--ease-out);
+}
+
+.outcome-list.is-visible .outcome-pillar {
+  opacity: 1;
+}
+
+.outcome-pillar span {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  background: var(--blue);
+  border-radius: 7px;
+  color: var(--white);
+  font-size: 0.56rem;
+  font-weight: 800;
+}
+
+.outcome-pillar strong {
+  font-size: 0.7rem;
+}
+
+.outcome-pillar-lucro {
+  top: 16px;
+  left: 14px;
+  transition-delay: 180ms;
+}
+
+.outcome-pillar-lead {
+  top: 16px;
+  right: 14px;
+  transition-delay: 260ms;
+}
+
+.outcome-pillar-loja {
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition-delay: 340ms;
+}
+
+.outcome-scan {
+  position: absolute;
+  top: 24px;
+  right: 8%;
+  left: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #82cffc, transparent);
+  box-shadow: 0 0 16px rgba(130, 207, 252, 0.8);
+  opacity: 0;
+  animation: outcomeScan 3.6s var(--ease-in-out) infinite;
 }
 
 .fit-grid {
@@ -1201,6 +1353,24 @@ nav .nav-cta {
   margin-bottom: 28px;
 }
 
+.authority-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.authority-summary strong,
+.authority-summary span {
+  padding: 9px 12px;
+  background: #e8f3fb;
+  border: 1px solid #cce3f3;
+  border-radius: 999px;
+  color: var(--navy);
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
 .authority-tags {
   display: flex;
   flex-wrap: wrap;
@@ -1267,6 +1437,14 @@ nav .nav-cta {
   color: #91a4bb;
   font-size: 0.7rem;
   line-height: 1.5;
+}
+
+.case-story {
+  max-width: 590px;
+  margin: 26px 0 0;
+  color: #b8c9dc;
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 .offer-section {
@@ -1504,6 +1682,88 @@ details[open] > p {
   color: var(--navy);
 }
 
+.enrollment-bar {
+  position: fixed;
+  z-index: 90;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  background: rgba(6, 21, 42, 0.96);
+  border-top: 1px solid rgba(130, 207, 252, 0.24);
+  box-shadow: 0 -16px 44px rgba(6, 21, 42, 0.2);
+  color: var(--white);
+  backdrop-filter: blur(16px);
+  animation: enrollmentBarEnter 560ms var(--ease-out) 420ms both;
+}
+
+.enrollment-bar-inner {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.enrollment-summary {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 18px;
+}
+
+.enrollment-summary strong {
+  font-family: "Lexend", "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+}
+
+.enrollment-summary span {
+  position: relative;
+  color: #b8c9dc;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.enrollment-summary span::before {
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 3px;
+  height: 3px;
+  background: #82cffc;
+  border-radius: 50%;
+  content: "";
+  transform: translateY(-50%);
+}
+
+.enrollment-cta {
+  display: inline-flex;
+  min-height: 48px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 12px 20px;
+  background: var(--white);
+  border-radius: 10px;
+  color: var(--navy);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition:
+    color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform 140ms var(--ease-out);
+}
+
+.enrollment-cta svg {
+  width: 17px;
+  height: 17px;
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+
 footer {
   padding: 32px 0;
   background: var(--paper);
@@ -1689,6 +1949,27 @@ footer {
   to { transform: scale(1.045) translate3d(0.45%, -0.35%, 0); }
 }
 
+@keyframes outcomeOrbit {
+  from { transform: translate(-50%, -50%) rotate(0); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes outcomeCorePulse {
+  from { transform: translate(-50%, -50%) scale(0.985); }
+  to { transform: translate(-50%, -50%) scale(1.025); }
+}
+
+@keyframes outcomeScan {
+  0%, 12%, 100% { opacity: 0; transform: translateY(0); }
+  24%, 74% { opacity: 0.92; }
+  88% { opacity: 0; transform: translateY(180px); }
+}
+
+@keyframes enrollmentBarEnter {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .hero-grid,
 .hero-grid::before,
 .hero-grid::after,
@@ -1700,6 +1981,9 @@ footer {
 .diagnostic-section::before,
 .scanner-status i,
 .scan-beam,
+.outcome-orbit,
+.outcome-core,
+.outcome-scan,
 .l3-scanner.is-visible .scanner-body article::after,
 .offer-card.is-visible::before,
 .closing-section::before,
@@ -1718,6 +2002,9 @@ footer {
 .diagnostic-section.is-motion-active::before,
 .diagnostic-section.is-motion-active .scanner-status i,
 .diagnostic-section.is-motion-active .scan-beam,
+.outcome-diagnostic.is-motion-active .outcome-orbit,
+.outcome-diagnostic.is-motion-active .outcome-core,
+.outcome-diagnostic.is-motion-active .outcome-scan,
 .diagnostic-section.is-motion-active .l3-scanner.is-visible .scanner-body article::after,
 .offer-section.is-motion-active .offer-card.is-visible::before,
 .closing-section.is-motion-active::before,
@@ -1940,8 +2227,16 @@ footer {
   }
 
   .button:not(:disabled):hover svg,
-  .text-link:hover svg {
+  .text-link:hover svg,
+  .enrollment-cta:hover svg {
     transform: translateX(4px);
+  }
+
+  .enrollment-cta:hover {
+    background: #eef8ff;
+    box-shadow: 0 12px 30px rgba(17, 134, 220, 0.22);
+    color: var(--blue);
+    transform: translateY(-2px);
   }
 
   .symptom-card:hover {
@@ -1959,6 +2254,10 @@ footer {
 .button:not(:disabled):active {
   transform: scale(0.97);
   transition-duration: 140ms;
+}
+
+.enrollment-cta:active {
+  transform: scale(0.97);
 }
 
 .program-item > span,
@@ -2103,6 +2402,10 @@ footer {
   .thank-aside {
     max-width: 480px;
   }
+
+  .enrollment-summary span:nth-of-type(1) {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
@@ -2112,6 +2415,10 @@ footer {
 
   .container {
     width: calc(100% - 30px);
+  }
+
+  .sales-page {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
   }
 
   .section {
@@ -2133,6 +2440,44 @@ footer {
   nav .nav-cta {
     padding: 9px 12px;
     font-size: 0.72rem;
+  }
+
+  .enrollment-bar {
+    padding-top: 8px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .enrollment-bar-inner {
+    gap: 9px;
+  }
+
+  .enrollment-summary {
+    display: grid;
+    flex: 1 1 auto;
+    gap: 2px;
+  }
+
+  .enrollment-summary strong {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .enrollment-summary span {
+    font-size: 0.68rem;
+  }
+
+  .enrollment-summary span:nth-of-type(2) {
+    display: none;
+  }
+
+  .enrollment-summary span:nth-of-type(3)::before {
+    display: none;
+  }
+
+  .enrollment-cta {
+    min-height: 48px;
+    padding: 11px 13px;
+    font-size: 0.66rem;
   }
 
   .hero-layout {
@@ -2325,6 +2670,19 @@ footer {
     padding: 30px 24px;
   }
 
+  .outcome-diagnostic {
+    min-height: 218px;
+  }
+
+  .outcome-pillar {
+    min-width: 78px;
+    padding: 6px 7px;
+  }
+
+  .outcome-pillar strong {
+    font-size: 0.64rem;
+  }
+
   .authority-fact {
     right: -4px;
     bottom: 18px;
@@ -2403,6 +2761,10 @@ footer {
 
   .scroll-progress {
     display: none;
+  }
+
+  .enrollment-bar {
+    animation: none;
   }
 
   .authority-photo > img {

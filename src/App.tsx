@@ -14,7 +14,7 @@ const heroVariants: Record<string, HeroVariant> = {
     cta: "Quero descobrir onde minha loja perde lucro",
   },
   "/a2": {
-    title: "Talvez sua loja não precise de mais anúncios.",
+    title: "Talvez sua loja não precise de mais anúncios. Precise descobrir onde o lucro está ficando pelo caminho.",
     support:
       "Antes de aumentar a verba, descubra se o gargalo está no Lucro, no Lead ou na Loja. Em 2 horas ao vivo, aplique o Raio-X L³ e saia com a primeira prioridade de correção.",
     cta: "Quero descobrir o gargalo antes de investir mais",
@@ -45,11 +45,16 @@ const workshopParts = [
   },
   {
     number: "04",
+    title: "Raio-X L³ na prática",
+    text: "Faça o diagnóstico L³ da sua loja junto com a Renata.",
+  },
+  {
+    number: "05",
     title: "Decisões em cenários econômicos",
     text: "Organize critérios para agir com mais clareza quando o mercado muda e a pressão aumenta.",
   },
   {
-    number: "05",
+    number: "06",
     title: "Um olhar externo para a operação",
     text: "Separe percepção, sintoma e causa para não confundir a rotina intensa com um diagnóstico correto.",
   },
@@ -104,6 +109,28 @@ function ArrowIcon() {
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
+  );
+}
+
+function L3DiagnosticVisual() {
+  return (
+    <div
+      className="outcome-diagnostic"
+      role="img"
+      aria-label="Ilustração do Raio-X L3 conectando os pilares Lucro, Lead e Loja"
+      data-motion-region
+    >
+      <div className="outcome-orbit" aria-hidden="true" />
+      <div className="outcome-core">
+        <span>Raio-X</span>
+        <strong>L³</strong>
+        <small>Diagnóstico</small>
+      </div>
+      <div className="outcome-pillar outcome-pillar-lucro"><span>L1</span><strong>Lucro</strong></div>
+      <div className="outcome-pillar outcome-pillar-lead"><span>L2</span><strong>Lead</strong></div>
+      <div className="outcome-pillar outcome-pillar-loja"><span>L3</span><strong>Loja</strong></div>
+      <div className="outcome-scan" aria-hidden="true" />
+    </div>
   );
 }
 
@@ -190,7 +217,7 @@ function Header() {
           <a href="#conteudo">Conteúdo</a>
           <a href="#renata">Renata</a>
           <a className="nav-cta" href="#inscricao">
-            Ver inscrição
+            Fazer inscrição
           </a>
         </nav>
       </div>
@@ -235,11 +262,32 @@ function CheckoutButton() {
   );
 }
 
+function StickyEnrollmentBar() {
+  const checkoutUrl = import.meta.env.VITE_CHECKOUT_URL?.trim();
+
+  return (
+    <aside className="enrollment-bar" aria-label="Resumo e inscrição no workshop">
+      <div className="container enrollment-bar-inner">
+        <div className="enrollment-summary">
+          <strong>Workshop Raio-X L³</strong>
+          <span>Online e ao vivo</span>
+          <span>2 horas</span>
+          <span>R$ 47</span>
+        </div>
+        <a className="enrollment-cta" href={checkoutUrl || "#inscricao"}>
+          <span>Garantir minha vaga</span>
+          <ArrowIcon />
+        </a>
+      </div>
+    </aside>
+  );
+}
+
 function SalesPage({ hero }: { hero: HeroVariant }) {
   useRevealMotion();
 
   return (
-    <>
+    <div className="sales-page">
       <div className="scroll-progress" aria-hidden="true" />
       <Header />
       <main>
@@ -247,13 +295,13 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           <div className="hero-grid" aria-hidden="true" />
           <div className="container hero-layout">
             <div className="hero-copy">
-              <p className="eyebrow hero-stagger hero-stagger-1">Workshop online e ao vivo para donos e gestores</p>
+              <p className="eyebrow hero-stagger hero-stagger-1">Workshop online e ao vivo para gestores e donos de lojas de móveis, planejados, colchões, decoração, cortinas, persianas e eletromóveis</p>
               <h1 className="hero-stagger hero-stagger-2">{hero.title}</h1>
               <p className="hero-support hero-stagger hero-stagger-3">{hero.support}</p>
               <div className="hero-actions hero-stagger hero-stagger-4">
                 <PrimaryLink label={hero.cta} />
                 <p>
-                  Para lojas de móveis, colchões, decoração, cortinas, persianas e eletromóveis.
+                  Para lojas de móveis, planejados, colchões, decoração, cortinas, persianas e eletromóveis.
                 </p>
               </div>
             </div>
@@ -284,7 +332,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
         <section className="facts" aria-label="Informações do workshop">
           <div className="container facts-grid">
             <div><strong>2 horas</strong><span>Encontro ao vivo</span></div>
-            <div><strong>R$ 97</strong><span>Investimento único</span></div>
+            <div><strong>R$ 47</strong><span>Investimento único</span></div>
             <div><strong>72 horas</strong><span>Acesso à gravação</span></div>
             <div><strong>Aplicação prática</strong><span>Com espaço para perguntas</span></div>
           </div>
@@ -307,7 +355,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
           <div className="container symptom-grid">
             {[
-              ["Venda sem sobra", "O movimento existe, mas o lucro não acompanha o esforço da operação."],
+              ["Venda sem lucro", "O movimento existe, mas o lucro não acompanha o esforço da operação."],
               ["Lead sem conversão", "A oportunidade chega e se perde antes de virar uma venda saudável."],
               ["Desconto como saída", "A equipe negocia preço sem saber o impacto real na margem."],
             ].map(([title, text], index) => (
@@ -359,6 +407,47 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
         </section>
 
+        <section className="section case-section">
+          <div className="container case-layout">
+            <Reveal>
+              <p className="eyebrow eyebrow-light">Um caso documentado</p>
+              <h2>Quando os três pilares passam a proteger o lucro.</h2>
+              <p className="case-story">
+                A loja vendia, mas o lucro escapava pelos três pilares: descontos sem controle, vendedores sem processo e tráfego focado em leads baratos. Com o Método L³, protegemos a margem, treinamos a equipe para vender soluções e atraímos o cliente certo para o produto certo. Resultado: mais conversão, vendas mais lucrativas e mais lucro.
+              </p>
+            </Reveal>
+            <Reveal className="case-metrics">
+              <div><span>Faturamento</span><strong>R$ 150 mil</strong><ArrowIcon /><strong>R$ 200 mil</strong></div>
+              <div><span>Lucro</span><strong>R$ 15 mil</strong><ArrowIcon /><strong>R$ 27 mil</strong></div>
+              <p>
+                Resultado de uma operação acompanhada. Este caso é específico e não representa promessa ou garantia de resultado.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="section outcome-section" data-motion-region>
+          <div className="container outcome-grid">
+            <Reveal className="outcome-card outcome-main">
+              <p className="eyebrow eyebrow-light">Seu resultado imediato</p>
+              <h2>Clareza para decidir o que corrigir primeiro.</h2>
+              <p>
+                Ao final do encontro, você terá um critério mais claro para identificar qual pilar exige atenção agora e quais números precisam entrar no seu radar.
+              </p>
+              <PrimaryLink label="Quero aplicar o Raio-X L³" />
+            </Reveal>
+            <Reveal className="outcome-card outcome-list">
+              <L3DiagnosticVisual />
+              {[
+                "Identificar o pilar que mais limita a operação",
+                "Definir a primeira prioridade de correção",
+                "Entender quais indicadores acompanhar",
+                "Evitar decisões baseadas apenas em sensação",
+              ].map((item) => <div className="outcome-point" key={item}><CheckIcon /><span>{item}</span></div>)}
+            </Reveal>
+          </div>
+        </section>
+
         <section className="section attempts-section">
           <div className="container">
             <Reveal className="center-heading">
@@ -399,27 +488,6 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
           </div>
         </section>
 
-        <section className="section outcome-section">
-          <div className="container outcome-grid">
-            <Reveal className="outcome-card outcome-main">
-              <p className="eyebrow eyebrow-light">Seu resultado imediato</p>
-              <h2>Clareza para decidir o que corrigir primeiro.</h2>
-              <p>
-                Ao final do encontro, você terá um critério mais claro para identificar qual pilar exige atenção agora e quais números precisam entrar no seu radar.
-              </p>
-              <PrimaryLink label="Quero aplicar o Raio-X L³" />
-            </Reveal>
-            <Reveal className="outcome-card outcome-list">
-              {[
-                "Identificar o pilar que mais limita a operação",
-                "Definir a primeira prioridade de correção",
-                "Entender quais indicadores acompanhar",
-                "Evitar decisões baseadas apenas em sensação",
-              ].map((item) => <div key={item}><CheckIcon /><span>{item}</span></div>)}
-            </Reveal>
-          </div>
-        </section>
-
         <section className="section fit-section">
           <div className="container fit-grid">
             <Reveal className="fit-card fit-yes">
@@ -452,36 +520,27 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
                 height="1280"
                 loading="lazy"
               />
-              <div className="authority-fact"><strong>50+</strong><span>empresas acompanhadas</span></div>
+              <div className="authority-fact"><strong>50+</strong><span>lojas acompanhadas</span></div>
             </Reveal>
             <Reveal className="authority-copy">
               <p className="eyebrow">Quem conduz o encontro</p>
-              <h2>Renata conecta finanças, gestão, marketing e operação.</h2>
+              <h2>Renata entende de números e da realidade de quem precisa fazer uma loja dar lucro.</h2>
               <p>
-                Sua trajetória começou há quase 30 anos, ensinando finanças em cursos de Administração, Ciências Contábeis, Economia e Engenharia. Ao ouvir repetidamente que os problemas financeiros das empresas nasciam em outras áreas, ela passou a construir uma ponte entre o conhecimento acadêmico e a realidade das operações.
+                Professora universitária e especialista em finanças e gestão, Renata reúne quase 30 anos de experiência e mais de 5.000 alunos.
               </p>
               <p>
-                Com mais de 20 anos de experiência conectando teoria e prática, Renata desenvolveu uma leitura integrada da empresa e já aplicou seu trabalho em mais de 50 organizações.
+                Após acompanhar mais de 50 lojas, desenvolveu uma visão que conecta finanças, gestão, marketing e operação. Ela identifica onde o lucro escapa: no estoque, na precificação, no marketing, no atendimento ou nos processos. E transforma gargalos em prioridades.
               </p>
+              <p>
+                Como nenhuma loja é igual à outra, seu trabalho é personalizado e individualizado, respeitando a estrutura, o momento, os objetivos e a cultura de cada negócio, sem fórmulas prontas.
+              </p>
+              <p>
+                Em uma das operações acompanhadas, o faturamento passou de R$ 150 mil para R$ 200 mil, crescimento de 33,3%, enquanto o lucro subiu de R$ 15 mil para R$ 27 mil, um avanço de 80%. Proporcionalmente, o lucro cresceu 2,4 vezes mais que o faturamento.
+              </p>
+              <p className="authority-summary"><strong>Quase 30 anos de experiência</strong><span>Mais de 5.000 alunos</span><span>Mais de 50 lojas acompanhadas</span></p>
               <div className="authority-tags">
                 <span>Finanças</span><span>Gestão</span><span>Marketing</span><span>Operação</span>
               </div>
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="section case-section">
-          <div className="container case-layout">
-            <Reveal>
-              <p className="eyebrow eyebrow-light">Um caso documentado</p>
-              <h2>Quando faturamento e lucro passam a ser vistos juntos.</h2>
-            </Reveal>
-            <Reveal className="case-metrics">
-              <div><span>Faturamento aproximado</span><strong>R$ 90 mil</strong><ArrowIcon /><strong>R$ 165 mil</strong></div>
-              <div><span>Lucro aproximado</span><strong>R$ 7 mil</strong><ArrowIcon /><strong>R$ 23 mil</strong></div>
-              <p>
-                Resultado de uma operação acompanhada. Este caso é específico e não representa promessa ou garantia de resultado.
-              </p>
             </Reveal>
           </div>
         </section>
@@ -504,7 +563,7 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
                 <li><CheckIcon /> Gravação disponível por 72 horas</li>
                 <li><CheckIcon /> Possibilidade de reunião estratégica individual</li>
               </ul>
-              <div className="price"><span>Investimento único</span><strong><small>R$</small> 97</strong></div>
+              <div className="price"><span>Investimento único</span><strong><small>R$</small> 47</strong></div>
               <CheckoutButton />
               <p className="offer-small">A data e o horário do encontro serão confirmados nos canais de inscrição.</p>
             </Reveal>
@@ -539,7 +598,8 @@ function SalesPage({ hero }: { hero: HeroVariant }) {
         </section>
       </main>
       <Footer />
-    </>
+      <StickyEnrollmentBar />
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
 # LojaADS | Workshop Raio-X L³
 
-Página de vendas do Workshop Raio-X L³, da LojaADS, apresentado por Renata. O projeto foi criado para donos e gestores de lojas de móveis, colchões, decoração, cortinas, persianas e eletromóveis.
+Página de vendas do Workshop Raio-X L³, da LojaADS, apresentado por Renata. O projeto foi criado para gestores e donos de lojas de móveis, planejados, colchões, decoração, cortinas, persianas e eletromóveis.
 
 ## Tecnologias
 
